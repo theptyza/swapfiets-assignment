@@ -1,0 +1,16 @@
+{
+  "name": "swapfiets-assignment",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "npx playwright test",
+    "test-debug": "npx playwright test --debug"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@playwright/test": "^1.32.1"
+  }
+}
