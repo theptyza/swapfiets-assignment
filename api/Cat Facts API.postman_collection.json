@@ -1,0 +1,256 @@
+{
+	"info": {
+		"_postman_id": "c1ea8fc8-b198-4647-8661-90f1bef2cce3",
+		"name": "Cat Facts API",
+		"description": "This API provides endpoints to get random cat facts",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "943757"
+	},
+	"item": [
+		{
+			"name": "breeds",
+			"item": [
+				{
+					"name": "Returns a list of breeds",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"const breedsLimit = parseInt(pm.collectionVariables.get(\"breeds_limit\"));",
+									"",
+									"const responseJson = pm.response.json();",
+									"",
+									"pm.test(`Number of breeds is ${breedsLimit}`, () => {",
+									"    pm.expect(responseJson.data).to.have.length(breedsLimit);",
+									"});",
+									"",
+									"pm.test('From and to values', () => {",
+									"    pm.expect(responseJson.from).to.eql(1);",
+									"    pm.expect(responseJson.to).to.eql(breedsLimit);",
+									"});",
+									"",
+									"pm.test('Per page value', () => {",
+									"    pm.expect(responseJson.per_page).to.eql(breedsLimit.toString());",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "https://catfact.ninja/breeds?limit={{breeds_limit}}",
+							"protocol": "https",
+							"host": [
+								"catfact",
+								"ninja"
+							],
+							"path": [
+								"breeds"
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "{{breeds_limit}}"
+								}
+							]
+						},
+						"description": "returns a list of breeds"
+					},
+					"response": []
+				}
+			],
+			"description": "Folder for breeds"
+		},
+		{
+			"name": "fact",
+			"item": [
+				{
+					"name": "Returns a random cat fact",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"const maxLength = parseInt(pm.collectionVariables.get(\"max_length\"));",
+									"",
+									"const responseJson = pm.response.json();",
+									"",
+									"pm.test(`Fact length is equal to length property`, () => {",
+									"    pm.expect(responseJson.fact).to.have.length(responseJson.length);",
+									"});",
+									"",
+									"pm.test(`Fact length is less than or equal to ${maxLength}`, () => {",
+									"    pm.expect(responseJson.fact).to.have.length.lte(maxLength);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "https://catfact.ninja/fact?max_length={{max_length}}",
+							"protocol": "https",
+							"host": [
+								"catfact",
+								"ninja"
+							],
+							"path": [
+								"fact"
+							],
+							"query": [
+								{
+									"key": "max_length",
+									"value": "{{max_length}}"
+								}
+							]
+						},
+						"description": "returns a random cat fact"
+					},
+					"response": []
+				}
+			],
+			"description": "Folder for fact"
+		},
+		{
+			"name": "facts",
+			"item": [
+				{
+					"name": "Get a list of cat facts",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"const factsLimit = parseInt(pm.collectionVariables.get(\"facts_limit\"));",
+									"const maxLength = parseInt(pm.collectionVariables.get(\"max_length\"));",
+									"",
+									"const responseJson = pm.response.json();",
+									"",
+									"pm.test(`Data length is ${factsLimit}`, () => {",
+									"    pm.expect(responseJson.data).to.have.length(factsLimit);",
+									"});",
+									"",
+									"pm.test('From and to values', () => {",
+									"    pm.expect(responseJson.from).to.eql(1);",
+									"    pm.expect(responseJson.to).to.eql(factsLimit);",
+									"});",
+									"",
+									"pm.test('Per page value', () => {",
+									"    pm.expect(responseJson.per_page).to.eql(factsLimit.toString());",
+									"});",
+									"",
+									"pm.test('Facts length', () => {",
+									"    responseJson.data.forEach(d => {",
+									"        pm.expect(d.fact).to.have.length.lte(maxLength);",
+									"        pm.expect(d.fact).to.have.length(d.fact.length);",
+									"    })",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "https://catfact.ninja/facts?limit={{facts_limit}}&max_length={{max_length}}",
+							"protocol": "https",
+							"host": [
+								"catfact",
+								"ninja"
+							],
+							"path": [
+								"facts"
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "{{facts_limit}}"
+								},
+								{
+									"key": "max_length",
+									"value": "{{max_length}}"
+								}
+							]
+						},
+						"description": "Get a list of cat facts"
+					},
+					"response": []
+				}
+			],
+			"description": "Folder for facts"
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "max_length",
+			"value": "200",
+			"type": "string"
+		},
+		{
+			"key": "breeds_limit",
+			"value": "10",
+			"type": "string"
+		},
+		{
+			"key": "facts_limit",
+			"value": "5",
+			"type": "string"
+		}
+	]
+}
